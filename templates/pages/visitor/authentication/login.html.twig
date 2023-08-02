@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {# Title #}
+        <title>Jean Dupon - Connection</title>
+
+        {# Favicon #}
+        <link rel="apple-touch-icon" sizes="180x180" href="{{asset('favicon/apple-touch-icon.png')}}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{asset('favicon/favicon-32x32.png')}}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{asset('favicon/favicon-16x16.png')}}">
+        <link rel="manifest" href="/site.webmanifest">
+
+        {# Fonts Family Google #}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap" rel="stylesheet">
+
+        {# Bootstrap 5 #}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+
+        {# Stylesheet CSS #}
+        {# <link rel="stylesheet" href="{{asset('styles/app.css')}}"> #}
+
+    </head>
+<body class="h-100">
+    <div class="container mt-lg-5">
+        <div class="row">
+            <div class="col-lg-6 text-center">
+                <img src="{{ asset("images/visitor/authentication/Connectez-vous-pour-lire-des-articles-sur-la-sante.png") }}" alt="Connectez vous pour lire des articles sur la sante." class="img-fluid">
+            </div>
+            <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <form method="POST" class="w-75">
+                    <div class="mb-3">
+                        <label for="authentication_form_email">Email</label>
+                        <input type="email" value="{{ last_username }}" name="email" id="authentication_form_email" class="form-control" autocomplete="email" required autofocus>
+                    </div>
+                    <div class="mb-3">
+                        <label for="authentication_form_password">Mot de passe</label>
+                        <input type="password" name="password" id="authentication_form_password" class="form-control" autocomplete="current-password" required>
+                    </div>
+                    <div class="mb-3">
+                        <input formnovalidate type="submit" value="Je me connecte" class="btn btn-primary w-100 shadow">
+                    </div>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                </form>
+                <p class="mb-3">Vous n'êtes pas encore inscrire ? <a href="{{ path('visitor.registration.register') }}">Inscrivez-vous</a></p>
+                <p class="mb-3"><a href="{{path('visitor.welcome.index')}}">Retour à l'accueil</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

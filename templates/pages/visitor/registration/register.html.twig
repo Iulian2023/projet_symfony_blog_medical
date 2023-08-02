@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {# Title #}
+        <title>Jean Dupon - Inscription</title>
+
+        {# Favicon #}
+        <link rel="apple-touch-icon" sizes="180x180" href="{{asset('favicon/apple-touch-icon.png')}}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{asset('favicon/favicon-32x32.png')}}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{asset('favicon/favicon-16x16.png')}}">
+        <link rel="manifest" href="/site.webmanifest">
+
+        {# Fonts Family Google #}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap" rel="stylesheet">
+
+        {# Bootstrap 5 #}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+
+        {# Stylesheet CSS #}
+        {# <link rel="stylesheet" href="{{asset('styles/app.css')}}"> #}
+
+    </head>
+<body class="h-100">
+
+
+    <div class="container mt-lg-5">
+        <div class="row">
+            <div class="col-lg-6 text-center">
+                <img src="{{ asset("images/visitor/registration/Inscrivez-vous-pour-lire-des-articles-sur-la-sante.png") }}" alt="Inscrivez vous pour lire des article sur la santé." class="img-fluid">
+            </div>
+            <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center">
+                    {% for flash_error in app.flashes('verify_email_error') %}
+                        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                    {% endfor %}
+                {{ form_start(registrationForm) }}
+                <div class="row">
+                        <div class="mb-3 col-lg-6">
+                            <label for="registration_form_firstName">Prénom</label>
+                            <div class="text-danger">{{ form_errors(registrationForm.firstName) }}</div>
+                            {{ form_widget(registrationForm.firstName, {'attr' : {"class": 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3 col-lg-6">
+                            <label for="registration_form_lastName">Nom</label>
+                            <div class="text-danger">{{ form_errors(registrationForm.lastName) }}</div>
+                            {{ form_widget(registrationForm.lastName, {'attr' : {"class": 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registration_form_email">Email</label>
+                        <div class="text-danger">{{ form_errors(registrationForm.email) }}</div>
+                        {{ form_widget(registrationForm.email, {'attr' : {"class": 'form-control'}}) }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="registration_form_password_first">Mot de passe</label>
+                        <div class="text-danger">{{ form_errors(registrationForm.password.first) }}</div>
+                        {{ form_widget(registrationForm.password.first, {'attr' : {"class": 'form-control'}}) }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="registration_form_password_second">Confirmation du Mot de passe</label>
+                        {{ form_widget(registrationForm.password.second, {'attr' : {"class": 'form-control'}}) }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="registration_form_agreeTerms" class="form-check-label">
+                        <div class="text-danger">{{ form_errors(registrationForm.agreeTerms) }}</div>
+                        {{ form_widget(registrationForm.agreeTerms, {'attr' : {"class": 'form-check-input'}}) }}
+                        Veuillez accepter <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal">les conditions générales d'utilisation</a>
+                            <!-- Modal -->
+                        <div class="modal fade" id="registerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel"> les conditions générales d'utilisation</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni blanditiis libero pariatur explicabo totam qui aperiam rerum, cum dignissimos amet quasi cumque eum hic ipsum nam et tempora quo accusantium vel ex temporibus possimus, est ratione? Blanditiis architecto ad provident laboriosam, laudantium inventore nisi, placeat autem, nesciunt magnam illum ipsa eaque aperiam distinctio adipisci assumenda neque perferendis at? Molestiae ipsa quas harum eligendi necessitatibus nam fugit non numquam repellat doloremque, recusandae facilis quasi dolor id, ullam impedit assumenda. Consectetur possimus accusantium nostrum maiores id, nulla omnis molestias tenetur quo ipsum sequi, aperiam inventore incidunt iusto voluptatum expedita. 
+                            </p>
+                            <p>
+                                Impedit recusandae ducimus, rerum quisquam voluptate officia atque. Amet, fugit cupiditate laudantium atque nisi non delectus excepturi hic ex ad alias adipisci reprehenderit sit obcaecati ullam dolores enim maxime totam quisquam illum provident? Cum voluptatibus excepturi nihil vero repellendus, ipsa, doloribus eius veniam minus harum voluptatem, molestiae nesciunt fugiat ipsam deserunt? Ratione obcaecati animi eos. Corporis veniam, quo ducimus debitis reiciendis consequuntur ipsum ex.</p> 
+                                
+                                <p>Voluptate voluptatem cum molestias officiis possimus, ratione accusantium vel itaque ab. Rem cumque accusamus error sunt quae architecto consectetur, ipsum excepturi culpa doloremque eum at nemo voluptatum, cupiditate laboriosam sint rerum, blanditiis dolores similique perferendis dicta maxime animi fuga inventore. Distinctio corrupti eaque ipsam sed excepturi porro, officia eligendi blanditiis explicabo aliquid expedita libero atque accusantium odit tenetur facere, voluptatum voluptate laboriosam quaerat. Excepturi tempora, minima suscipit saepe neque nam consequatur, earum nostrum illo architecto delectus aliquam odio nesciunt cum in commodi facilis possimus soluta. Esse quisquam minus praesentium provident, aut at ipsam adipisci nam velit nihil modi tempore sequi sunt quas explicabo alias.
+                            </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary shadow" data-bs-dismiss="modal">Fermer</button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <input formnovalidate type="submit" value="Je m'inscris" class="btn btn-primary w-100 shadow">
+                    </div>
+                {{ form_end(registrationForm) }}
+                <p class="mb-3">Vous avez déjà un compte ? <a href="#">Connectez-vous</a></p>
+                <p class="mb-3"><a href="{{path('visitor.welcome.index')}}">Retour à l'accueil</a></p>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

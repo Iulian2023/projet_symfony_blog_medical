@@ -1,0 +1,12 @@
+
+// Import of the variabiles
+@import "./abstracts/variables";
+
+// Import of the fonts Styles
+@import "./base/typography";
+
+// Import classes
+@import "./base/classes";
+
+// the ~ allows you to reference things in node_modules
+@import "~bootstrap/scss/bootstrap";

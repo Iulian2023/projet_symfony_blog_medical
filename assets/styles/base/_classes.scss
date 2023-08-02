@@ -1,0 +1,14 @@
+// margin sur l'axe d'absices responsive
+.mx-jd
+{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    
+    @media screen and (min-width: 992px)
+    {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
