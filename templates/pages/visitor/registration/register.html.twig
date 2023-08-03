@@ -105,7 +105,7 @@
                         <input formnovalidate type="submit" value="Je m'inscris" class="btn btn-primary w-100 shadow">
                     </div>
                 {{ form_end(registrationForm) }}
-                <p class="mb-3">Vous avez déjà un compte ? <a href="#">Connectez-vous</a></p>
+                <p class="mb-3">Vous avez déjà un compte ? <a href="{{ path('visitor.authentication.login')}}">Connectez-vous</a></p>
                 <p class="mb-3"><a href="{{path('visitor.welcome.index')}}">Retour à l'accueil</a></p>
             </div>
         </div>

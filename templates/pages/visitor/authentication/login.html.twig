@@ -38,10 +38,16 @@
                 <img src="{{ asset("images/visitor/authentication/Connectez-vous-pour-lire-des-articles-sur-la-sante.png") }}" alt="Connectez vous pour lire des articles sur la sante." class="img-fluid">
             </div>
             <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center">
-                {% if error %}
-                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
                 <form method="POST" class="w-75">
+                {% if error %}
+                    <div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {% for message in app.flashes('success') %}
+                        <div class="alert alert-success text-center" role="alert">
+                            {{message}}
+                        </div>
+                {% endfor %}
                     <div class="mb-3">
                         <label for="authentication_form_email">Email</label>
                         <input type="email" value="{{ last_username }}" name="email" id="authentication_form_email" class="form-control" autocomplete="email" required autofocus>
@@ -49,6 +55,16 @@
                     <div class="mb-3">
                         <label for="authentication_form_password">Mot de passe</label>
                         <input type="password" name="password" id="authentication_form_password" class="form-control" autocomplete="current-password" required>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="d-flex gap-1">
+                                <input type="checkbox" name="_remember_me" class="form-check-input"> Se souvenir de moi
+                            </label>
+                        </div>
+                        <div class="col-md-6 text-lg-end">
+                            <a href="{{path('visitor.authentication.forgot_password_request')}}">Mot de passe oublié ?</a>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <input formnovalidate type="submit" value="Je me connecte" class="btn btn-primary w-100 shadow">
