@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -75,7 +76,12 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/verify/email', name: 'visitor.registration.email_verification')]
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
+    public function verifyUserEmail(
+        Request $request, 
+        TranslatorInterface $translator, 
+        UserRepository $userRepository,
+        EntityManagerInterface $em
+        ): Response
     {
         $id = $request->query->get('id');
 
@@ -95,6 +101,9 @@ class RegistrationController extends AbstractController
         try 
         {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
+            $user->setVerifiedAt(new DateTimeImmutable('now'));
+            $em->persist($user);
+            $em->flush();
         } 
         catch (VerifyEmailExceptionInterface $exception) 
         {

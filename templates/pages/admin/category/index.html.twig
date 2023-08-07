@@ -1,0 +1,13 @@
+{% extends "themes/base_admin.html.twig" %}
+
+{% block title %} - Liste des catégories{% endblock %}
+
+{% block description %}Le blog de Jen Dupont - Admin - Liste des catégories qui permtet de voir et de acceder les liste, du plus on peut les crées et les supprimmer{% endblock %}
+
+{% block main %}
+    <h1 class="text-center my-3 display-5">Liste des catégories</h1>
+
+    <div class="d-flex justify-content-end align-content-center my-3">
+        <a href="{{ path('admin.category.create') }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nouvelle catégorie</a>
+    </div>
+{% endblock %}

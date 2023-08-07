@@ -1,0 +1,9 @@
+{% extends "themes/base_admin.html.twig" %}
+
+{% block title %}- Admin dashboard Home Page{% endblock %}
+
+{% block description %}La zone admin de blog de Jean Dupont{% endblock %}
+
+{% block main %}
+    <h1 class="text-center my-3 display-5">Hello {{app.user.firstName}}</h1>
+{% endblock %}
