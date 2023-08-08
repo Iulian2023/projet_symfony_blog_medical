@@ -4,10 +4,77 @@
 
 {% block description %}Le blog de Jen Dupont - Admin - Liste des catégories qui permtet de voir et de acceder les liste, du plus on peut les crées et les supprimmer{% endblock %}
 
+{% block jQuery %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
+{% block datatables %}
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
+ 
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
+
+    <script>
+        $(document).ready( function () {
+            $('#table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json',
+                },
+            });
+        } );
+    </script>
+{% endblock %}
+
 {% block main %}
     <h1 class="text-center my-3 display-5">Liste des catégories</h1>
 
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
     <div class="d-flex justify-content-end align-content-center my-3">
-        <a href="{{ path('admin.category.create') }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nouvelle catégorie</a>
+        <a href="{{ path('admin.category.create') }}" class="btn btn-primary shadow"><i class="fa-solid fa-plus"></i> Nouvelle catégorie</a>
     </div>
+
+    {# {% if categories|length == 0 %}
+        <p class="text-center my-5">Aucune catégorie crées pour l'instant</p>        
+    {% else %} #}
+        <div class="table-responsive pt-2">
+            <table id="table" class="table table-striped table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Slug</th>
+                        <th>Créé le</th>
+                        <th>Modifiée le</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody class="table-light">
+                    {% for category in categories %}
+                        <tr>
+                            <td>{{ category.id }}</td>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.slug }}</td>
+                            <td>{{ category.createdAt|date('d-m-Y') }}</td>
+                            <td>{{ category.updatedAt|date('d-m-Y') }}</td>
+                            <td>
+                                <a title="Modifier" href="{{ path('admin.category.edit', {'id': category.id}) }}" class="text-primary fs-5  m-2"><i class="fa-solid fa-pencil"></i></a>
+                                <a onclick="event.preventDefault();return confirm('Confirmer la suppression de cette catégorie ?') && document.querySelector('#form_delete_category_{{category.id}}').submit();" title="Supprimer" href="#" class="text-danger fs-5 m-2"><i class="fa-solid fa-trash-can"></i></a>
+                                <form action="{{path('admin.category.delete', {'id': category.id})}}" method="post" id="form_delete_category_{{category.id}}">
+                                    <input type="hidden" name="csrf_token" value="{{csrf_token('delete_category_'~category.id)}}">
+                                    <input type="hidden" name="_method", value="DELETE">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {# {% endif %} #}
+    
+
 {% endblock %}

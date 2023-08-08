@@ -33,7 +33,14 @@
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
     {% endblock %}
-        
+
+    {# jQuery #}
+    {% block jQuery %}{% endblock %}
+
+    {# Datatables #}
+    {% block datatables %}{% endblock %}
+
+    {% block tinyMCE %}{% endblock %}
     <style>
     
         .bi {
