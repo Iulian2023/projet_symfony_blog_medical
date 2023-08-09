@@ -50,6 +50,7 @@ class CategoryController extends AbstractController
     #[Route('/admin/category/{id}/edit', name: 'admin.category.edit', methods: ['GET', 'PUT'])]
     public function edit(Category $category, Request $request, EntityManagerInterface $em) : Response
     {
+        
        $form = $this->createForm(CategoryFormType::class, $category, [
         "method" => "PUT"
        ]);

@@ -1,0 +1,13 @@
+{% extends "themes/base_admin.html.twig" %}
+
+{% block title %} List des tags{% endblock %}
+
+{% block description %}Le blog de Jean Dupont - Admin - la liste des tags{% endblock %}
+
+{% block main %}
+    <h1 class="text-center display-5 my-3">Liste des tags</h1>
+
+    <div class="d-flex justify-content-end align-content-center my-3">
+        <a href="{{path("admin.tag.create")}}" class="btn btn-primary shadow"><i class="fa-solid fa-plus"></i> Nouveau Tag</a>
+    </div>
+{% endblock %}

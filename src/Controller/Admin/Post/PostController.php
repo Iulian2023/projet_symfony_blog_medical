@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Post;
 
 use App\Entity\Post;
 use App\Form\PostFormType;
+use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,8 +26,18 @@ class PostController extends AbstractController
     }
 
     #[Route('/admin/post/create', name: 'admin.post.create', methods:['GET', 'POST'])]
-    public function create(Request $request, EntityManagerInterface $em) : Response
+    public function create(Request $request,
+        EntityManagerInterface $em,
+        CategoryRepository $categoryRepository
+        ) : Response
     {
+
+        if (count($categoryRepository->findAll()) == 0) 
+        {
+            $this->addFlash("warning", "Acune catégorie. Vous devrez créer un afin du créer un article.");
+            return $this->redirectToRoute('admin.category.index');
+        }
+
         $post = new Post();
 
         $form = $this->createForm(PostFormType::class, $post);
@@ -51,8 +62,14 @@ class PostController extends AbstractController
     }
 
     #[Route('/admin/post/{id}/publish', name: 'admin.post.publish', methods:['PUT'])]
-    public function publish(Post $post, EntityManagerInterface $em, Request $request) : Response
+    public function publish(Post $post, EntityManagerInterface $em, Request $request, CategoryRepository $categoryRepository) : Response
     {
+
+        if (count($categoryRepository->findAll()) == 0) 
+        {
+            $this->addFlash("warning", "Acune catégorie. Vous devrez créer un afin du créer un article.");
+            return $this->redirectToRoute('admin.category.index');
+        }
 
         if ( $this->isCsrfTokenValid('post_publish_' . $post->getId(), $request->request->get('csrf_token'))) 
         {
@@ -82,14 +99,26 @@ class PostController extends AbstractController
     }
 
     #[Route('/admin/post/{id}/show', name: 'admin.post.show', methods:['GET'])]
-    public function show(Post $post) : Response
+    public function show(Post $post, CategoryRepository $categoryRepository) : Response
     {
+        if (count($categoryRepository->findAll()) == 0) 
+        {
+            $this->addFlash("warning", "Acune catégorie. Vous devrez créer un afin du créer un article.");
+            return $this->redirectToRoute('admin.category.index');
+        }
+
         return $this->render("pages/admin/post/show.html.twig", compact('post'));
     }
 
     #[Route('/admin/post/{id}/edit', name: 'admin.post.edit', methods:['GET', 'PUT'])]
-    public function edit(Post $post, Request $request, EntityManagerInterface $em) : Response
+    public function edit(Post $post, Request $request, EntityManagerInterface $em, CategoryRepository $categoryRepository) : Response
     {
+        if (count($categoryRepository->findAll()) == 0) 
+        {
+            $this->addFlash("warning", "Acune catégorie. Vous devrez créer un afin du créer un article.");
+            return $this->redirectToRoute('admin.category.index');
+        }
+
         $form = $this->createForm(PostFormType::class, $post, [
             "method" => "PUT"
         ]);
@@ -115,8 +144,15 @@ class PostController extends AbstractController
     }
 
     #[Route('/admin/post/{id}/delete', name: 'admin.post.delete', methods: ['DELETE'])]
-    public function delete(Post $post, Request $request, EntityManagerInterface $em) :Response
+    public function delete(Post $post, Request $request, EntityManagerInterface $em, CategoryRepository $categoryRepository) :Response
     {
+
+        if (count($categoryRepository->findAll()) == 0) 
+        {
+            $this->addFlash("warning", "Acune catégorie. Vous devrez créer un afin du créer un article.");
+            return $this->redirectToRoute('admin.category.index');
+        }
+
         if ( $this->isCsrfTokenValid('post_delete_' . $post->getId(), $request->request->get('csrf_token'))) 
         {
             $em->remove($post);
