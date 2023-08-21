@@ -6,6 +6,9 @@
     <title>Le blog de Jean Dupont  - Admin -{% block title %} Dashbord{% endblock %}</title>
     <meta name="description" content="{% block description %}{% endblock %}">
 
+    {# No SEO for admin #}
+    <meta name="robots" content="noindex, nofollow">
+
     {# Favicon #}
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon/favicon-32x32.png') }}">
@@ -15,7 +18,7 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+    {# Font Awsome #}
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -25,12 +28,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap" rel="stylesheet">
 
     {# A css part of webpack encore #}
-    {% block stylesheets %}
+    {% block webpack_encore_stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
 
     {# A js part of webpack encore #}
-    {% block javascripts %}
+    {% block webpack_encore_javascripts %}
         {{ encore_entry_script_tags('app') }}
     {% endblock %}
 
@@ -41,6 +44,7 @@
     {% block datatables %}{% endblock %}
 
     {% block tinyMCE %}{% endblock %}
+
     <style>
     
         .bi {
@@ -88,6 +92,17 @@
         .navbar .form-control {
         padding: .75rem 1rem;
         }
+
+        .cursor-pointer
+        {
+            cursor: pointer;
+        }
+
+        .cursor-pointer:hover
+        {
+            cursor: pointer;
+            text-decoration: underline;
+        }
     </style>
     
   </head>
@@ -105,5 +120,7 @@
         </div>
     </div>
     <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js" integrity="sha384-gdQErvCNWvHQZj6XZM0dNsAoY4v+j5P1XDpNkcM3HJG1Yx04ecqIHk7+4VBOCHOG" crossorigin="anonymous"></script><script src="dashboard.js"></script></body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js" integrity="sha384-gdQErvCNWvHQZj6XZM0dNsAoY4v+j5P1XDpNkcM3HJG1Yx04ecqIHk7+4VBOCHOG" crossorigin="anonymous"></script><script src="dashboard.js"></script>
+    {% block javascripts %}{% endblock %}
+    </body>
 </html>

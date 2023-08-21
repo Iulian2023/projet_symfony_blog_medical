@@ -18,7 +18,7 @@ class PostController extends AbstractController
     #[Route('/admin/post/list', name: 'admin.post.index')]
     public function index(PostRepository $postRepository): Response
     {
-        $posts = $postRepository->findBy([], ['createdAt' => 'DESC']);
+        $posts = $postRepository->findBy([], ['updatedAt' => 'DESC']);
 
         return $this->render('pages/admin/post/index.html.twig', [
             "posts" => $posts
@@ -163,4 +163,35 @@ class PostController extends AbstractController
 
         return $this->redirectToRoute('admin.post.index');
     }
+
+    #[Route('/admin/post/multiple-posts-delete', name: 'admin.post.multiple_delete', methods: ['DELETE'])]
+    public function multipleDelete(Request $request, PostRepository $postRepository, EntityManagerInterface $em) : Response
+    {
+        $csrfTokenValue = $request->request->get('csrf_token');
+        $ids = $request->request->get('ids');
+
+        $ids = explode(",", $ids);
+
+        if ( $this->isCsrfTokenValid("multiple_delete_post_token_key", $csrfTokenValue) )
+        {
+            foreach ($ids as $id) 
+            {
+                $post = $postRepository->findOneBy(["id" => $id]);
+
+                $em->remove($post);
+                $em->flush();
+            }
+
+           return  $this->json(['status' => true, "message" => "La suppression multipe a été effectuée avec succès."]);
+        }
+        
+        return $this->json(
+            ['status' => false, "message" => "Un probème est survenu, veillez réessayer."],
+            403
+        );
+
+        // return new JasonResponse();
+
+    }
+
 }

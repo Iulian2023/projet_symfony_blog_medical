@@ -4,10 +4,73 @@
 
 {% block description %}Le blog de Jean Dupont - Admin - la liste des tags{% endblock %}
 
+{% block jQuery %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
+{% block datatables %}
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
+ 
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
+
+    <script>
+        $(document).ready( function () {
+            $('#table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json',
+                },
+                order: [[ 4, 'desc' ]]
+            });
+        } );
+    </script>
+{% endblock %}
+
 {% block main %}
     <h1 class="text-center display-5 my-3">Liste des tags</h1>
 
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
     <div class="d-flex justify-content-end align-content-center my-3">
         <a href="{{path("admin.tag.create")}}" class="btn btn-primary shadow"><i class="fa-solid fa-plus"></i> Nouveau Tag</a>
+    </div>
+
+    <div class="table-responsive">
+        <table id="table" class="table table-striped table-hover table-bordered">
+            <thead class="table-primary">
+                <tr class="text-center">
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Slug</th>
+                    <th>Crée</th>
+                    <th>Modifier</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody class="table-light">
+                {% for tag in tags %}
+                    <tr class="text-center">
+                        <td>{{tag.id}}</td>
+                        <td>{{tag.name}}</td>
+                        <td>{{tag.slug}}</td>
+                        <td>{{tag.createdAt|format_datetime('long', 'short', locale='fr')}}</td>
+                        <td>{{tag.updatedAt|format_datetime('long', 'short', locale='fr')}}</td>
+                        <td>
+                            <a title="Modifier" href="{{path("admin.tag.edit", {'id' : tag.id})}}"><i class="fa-solid fa-pencil text-primary fs-4 me-2"></i></a>
+                            <a onclick="event.preventDefault(); return confirm('Confirmer la suppression de ce tag ?') && document.querySelector('#tag_delete_form_{{tag.id}}').submit()" title="Supprier" href="#"><i class="fa-solid fa-trash-can text-danger fs-4 me-2"></i></a>
+                            <form action="{{path("admin.tag.delete", {'id' : tag.id})}}" method="post" id="tag_delete_form_{{tag.id}}">
+                                <input type="hidden" name="csrf_token" value="{{csrf_token("tag_delete_"~tag.id)}}">
+                                <input type="hidden" name="_method" value="DELETE">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
     </div>
 {% endblock %}

@@ -11,8 +11,6 @@
 
         {% if post.image %}
             <img src="{{ vich_uploader_asset(post, 'imageFile')}}" alt="{{ post.title }}" class="img-fluid">
-        {% else %}
-            <p>---</p>
         {% endif %}
 
         {{post.content|raw}}

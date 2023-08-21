@@ -13,6 +13,10 @@
     </script>
 {% endblock %}
 
+{% block jQuery %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
 {% block main %}
     <h1 class="text-center my-3 display-5">Modifier l'article</h1>
 
@@ -35,14 +39,15 @@
                     {{form_widget(form.category, {'attr' : {'class' : 'form-select'}})}}
                     </div>
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-4 text-center d-flex flex-column justify-content-center align-items-center">
                         {% if post.image %}
+                            <label for="">L'image actuelle</label>
                             <img src="{{ vich_uploader_asset(post, 'imageFile') | imagine_filter('admin_post_thumbnail') }}" alt="{{ post.title }}">
                         {% else %}
-                            <p>---</p>
+                            <p class="text-center pt-lg-4">Acune image existanté</p>
                         {% endif %}
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="post_form_imageFile_file" class="form-label">Image</label>
                                 <div class="text-danger">
@@ -50,6 +55,10 @@
                                 </div>
                                 {{form_widget(form.imageFile, {'attr' : {'class' : 'form-control mt-1 mb-3'}})}}
                             </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="preview-image-title"></div>
+                            <div class="preview-image-content"></div>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -60,10 +69,36 @@
                     {{form_widget(form.content, {'attr' : {'class' : 'form-control', 'rows' : 10}})}}
                     </div>
                     <div class="mb-3 mt-3 d-flex justify-content-center">
-                        <input formnovalidate type="submit" value="Modifier et sauvegarder" class="btn btn-primary w-50 shadow">
+                        <input formnovalidate type="submit" value="Modifier et sauvegarder" class="btn btn-primary shadow">
                     </div>
                 {{form_end(form)}}
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            
+
+            $('#post_form_imageFile_file').on('change', function() {
+                let file = $(this).get(0).files[0];
+
+                if (file)
+                {
+                    let fileReader = new FileReader();
+
+                    fileReader.onload = function () {
+                        let p = `<p>Aperçu de l'image</p>`;
+                        let img = `<img src="${fileReader.result}" class="img-fluid" alt="Prévisualisation de l'image de l'article" >`;
+
+                        $('.preview-image-title').html(p);
+                        $('.preview-image-content').html(img);
+                    };
+                    fileReader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
 {% endblock %}
