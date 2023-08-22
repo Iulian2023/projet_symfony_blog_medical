@@ -6,6 +6,7 @@ use App\Entity\Post;
 use App\Form\PostFormType;
 use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
+use App\Repository\TagRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,7 +29,8 @@ class PostController extends AbstractController
     #[Route('/admin/post/create', name: 'admin.post.create', methods:['GET', 'POST'])]
     public function create(Request $request,
         EntityManagerInterface $em,
-        CategoryRepository $categoryRepository
+        CategoryRepository $categoryRepository,
+        TagRepository $tagRepository
         ) : Response
     {
 
@@ -37,6 +39,8 @@ class PostController extends AbstractController
             $this->addFlash("warning", "Acune catégorie. Vous devrez créer un afin du créer un article.");
             return $this->redirectToRoute('admin.category.index');
         }
+
+        $tags = $tagRepository->findAll();
 
         $post = new Post();
 
@@ -58,6 +62,7 @@ class PostController extends AbstractController
 
         return $this->render('pages/admin/post/create.html.twig', [
             "form" => $form->createView(),
+            "tags" => $tags
         ]);
     }
 
@@ -168,30 +173,28 @@ class PostController extends AbstractController
     public function multipleDelete(Request $request, PostRepository $postRepository, EntityManagerInterface $em) : Response
     {
         $csrfTokenValue = $request->request->get('csrf_token');
-        $ids = $request->request->get('ids');
-
-        $ids = explode(",", $ids);
-
-        if ( $this->isCsrfTokenValid("multiple_delete_post_token_key", $csrfTokenValue) )
+        
+        if ( ! $this->isCsrfTokenValid("multiple_delete_post_token_key", $csrfTokenValue) )
         {
-            foreach ($ids as $id) 
-            {
-                $post = $postRepository->findOneBy(["id" => $id]);
-
-                $em->remove($post);
-                $em->flush();
-            }
-
-           return  $this->json(['status' => true, "message" => "La suppression multipe a été effectuée avec succès."]);
+            return $this->json(
+                ['status' => false, "message" => "Un probème est survenu, veillez réessayer."],
+                Response::HTTP_BAD_REQUEST
+            );    
         }
         
-        return $this->json(
-            ['status' => false, "message" => "Un probème est survenu, veillez réessayer."],
-            403
-        );
-
+        $ids = $request->request->get('ids');
+        
+        $ids = explode(",", $ids);
+        
+        foreach ($ids as $id) 
+        {
+            $post = $postRepository->findOneBy(["id" => $id]);
+            
+            $em->remove($post);
+            $em->flush();
+        }
+        
+        return  $this->json(['status' => true, "message" => "La suppression multiple a été effectuée avec succès."]);
         // return new JasonResponse();
-
     }
-
 }

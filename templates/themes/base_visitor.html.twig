@@ -29,6 +29,7 @@
 
             {# Stylesheet Css #}
             {# <link rel="stylesheet" href="{{asset('assets/styles/app.css')}}"> #}
+
     </head>
     <body>
         {# Navbar #}
@@ -37,5 +38,6 @@
         {% block main %}{% endblock %}
 
         {# Footer #}
+        {% include "layouts/footer/footer_visitor.html.twig" %}
     </body>
 </html>

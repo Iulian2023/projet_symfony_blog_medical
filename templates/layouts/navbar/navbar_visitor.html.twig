@@ -10,7 +10,7 @@
                 <a class="nav-link active" aria-current="page" href="{{path("visitor.welcome.index")}}">Accueil</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Qui suis-je</a>
+                <a class="nav-link" href="{{path('visitor.welcome.index')}}#about-me">Qui suis-je</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Blog</a>
@@ -21,9 +21,19 @@
         </ul>
         <ul class="navbar-nav ms-auto">
             {% if app.user %}
-            <li class="nav-item">
-                <a href="{{path('app.logout')}}" class="btn btn-outline-primary shadow">Déconnexion</a>
-            </li>
+                {% if "ROLE_ADMIN" in app.user.roles %}
+                    <li class="nav-item">
+                        <a href="{{path('admin.home.dashboard')}}" class="btn btn-primary mx-jd shadow">Espace admin</a>
+                    </li>
+                {% endif %}
+                {% if "ROLE_USER" in app.user.roles %}
+                    <li class="nav-item">
+                        <a href="#" class="btn btn-primary mx-jd shadow">Espace privé</a>
+                    </li>
+                {% endif %}
+                    <li class="nav-item">
+                        <a href="{{path('app.logout')}}" class="btn btn-outline-primary mx-jd shadow">Déconnexion</a>
+                    </li>
             {% else %}
             <li class="nav-item">
                 <a href="{{path('visitor.authentication.login')}}" class="btn btn-outline-primary mx-jd shadow">Connexion</a>
