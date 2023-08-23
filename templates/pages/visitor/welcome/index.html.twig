@@ -14,7 +14,7 @@
                         <h1 class="display-6 py-5 font-weight-bolder">Bienvenue sur mon blog</h1>
                         <p>Je m'appelle Jean Dupont.</p>
                         <p>Permettez-moi de vous faire découvrir les clés d'une vie saine et épanouissante.</p>
-                        <a href="" class="btn btn-primary btn-lg mt-5">Lire les articles</a>
+                        <a href="{{path('visitor.blog.index')}}" class="btn btn-primary btn-lg mt-5">Lire les articles</a>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
         </section>
 
     {% if posts is not empty %}
-        <section class="my-3 py-3">
+        <section id="latest-posts" class="my-3 py-3">
             <h1 class="display-5 text-center my-3">Mes derniers articles</h1>
 
             <div class="container mt-5">

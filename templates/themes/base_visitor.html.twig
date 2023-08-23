@@ -18,20 +18,22 @@
         <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap" rel="stylesheet">
 
         {# Css part of webpack encore #}
-            {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+            {% block webpack_encore_stylesheets %}
+                {{ encore_entry_link_tags('app') }}
             {% endblock %}
 
             {# JS part of webpack encore #}
-            {% block javascripts %}
+            {% block webpack_encore_javascripts %}
                 {{ encore_entry_script_tags('app') }}
             {% endblock %}
 
+            {% block jQuery %}
+            {% endblock %}
             {# Stylesheet Css #}
             {# <link rel="stylesheet" href="{{asset('assets/styles/app.css')}}"> #}
 
     </head>
-    <body>
+    <body class="jd-body-visitor">
         {# Navbar #}
         {% include "layouts/navbar/navbar_visitor.html.twig" %}
         {# Content #}

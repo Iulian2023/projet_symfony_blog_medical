@@ -12,3 +12,30 @@
         margin-right: 10px;
     }
 }
+
+.cursor-pointer
+{
+    cursor: pointer;
+}
+
+.cursor-pointer:hover
+{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.jd-container
+{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+    @media screen and (min-width: 768px) {
+        & 
+        {
+            width: 50%;
+        }
+    }
+
+}
+

@@ -1,3 +1,5 @@
+{% set curentPathInfo = app.request.pathInfo%}
+
 <nav class="navbar navbar-expand-lg">
   <div class="container-lg">
     <a class="navbar-brand" href="{{path("visitor.welcome.index")}}">J. Dupont</a>
@@ -7,16 +9,19 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{path("visitor.welcome.index")}}">Accueil</a>
+                <a class="nav-link {{curentPathInfo == path('visitor.welcome.index') ? 'jd-active' : ''}}"
+                {{curentPathInfo == path('visitor.welcome.index') ? "aria-current='page'"  : ''}}   href="{{path("visitor.welcome.index")}}">Accueil</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{path('visitor.welcome.index')}}#about-me">Qui suis-je</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Blog</a>
+                <a class="nav-link {{curentPathInfo == path('visitor.blog.index') ? 'jd-active' : ''}}"
+                {{curentPathInfo == path('visitor.blog.index') ? "aria-current='page'"  : ''}} href="{{path('visitor.blog.index')}}">Blog</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
+                <a class="nav-link {{curentPathInfo == path('visitor.contact.create') ? 'jd-active' : ''}}"
+                {{curentPathInfo == path('visitor.contact.create') ? "aria-current='page'"  : ''}} class="nav-link" href="{{path('visitor.contact.create')}}">Contact</a>
             </li>
         </ul>
         <ul class="navbar-nav ms-auto">

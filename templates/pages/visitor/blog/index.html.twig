@@ -1,0 +1,75 @@
+{% extends "themes/base_visitor.html.twig" %}
+
+{% block title %} - Liste des articles{% endblock %}
+
+{% block jQuery %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
+{% block main %}
+    <main>
+        {{ include ("components/header_visitor.html.twig", {title: 'Liste des articles'}) }}
+    </main>
+
+    <div class="d-flex justify-content-around my-5">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Les Catégories
+            </button>
+            <ul class="dropdown-menu">
+            {% if categories is empty %}
+                <li><a class="dropdown-item disabled" href="#" aria-disabled="true" >Acune catégorie</a></li>
+            {% else %}
+            {% for category in categories %}
+                <li><a class="dropdown-item" href="#">{{category.name}} ({{category.posts|length}})</a></li>
+            {% endfor %}
+            {% endif %}
+            </ul>
+        </div>
+
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Les tags
+            </button>
+            <ul class="dropdown-menu">
+            {% if tags is empty %}
+                <li><a class="dropdown-item disabled" href="#" aria-disabled="true">Acune tag</a></li>
+            {% else %}    
+            {% for tag in tags %}
+                <li><a class="dropdown-item" href="#">{{tag.name}} ({{tag.posts|length}})</a></li>
+            {% endfor %}
+            {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    {% if posts is not empty %}
+        <div class="container">
+            {% for post in posts %}
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="card mb-3" style="max-width: 740px; ">
+                    <div class="row">
+                        <div class="col-md-4">
+                                {% if post.image %}
+                                    <img src="{{ vich_uploader_asset(post, 'imageFile') | imagine_filter('visitor_blog_thumbnail') }}" alt="{{ post.title }}" class="w-100 h-100 rounded">
+                                {% else %}
+                                    <img src="{{asset("images/visitor/blog/pas_d_image_disponible.jpg")}}" class="w-100 h-100 rounded" alt={{post.title }}>
+                                {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{post.title}}</h5>
+                                <p class="card-text"><small class="text-body-secondary">Publié {{post.updatedAt|ago}}</small></p>
+                                <p class="card-text">{{post.content|striptags|u.truncate(80, '...')|raw}}</p>
+                                <p class=""><a href="{{path('visitor.blog.post.show', {'id': post.id, 'slug': post.slug})}}" class="btn btn-sm btn-primary">Lire la suite</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <h3 class="text-center my-3 mt-5">Acune article publié pour l'instant</h3>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "themes/base_visitor.html.twig" %}
+ 
+{% block title %} - Le blog sur la santé - {{post.title}}{% endblock %}
+
+{% block main %}
+    <main>
+        <div class="jd-container my-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{path('visitor.blog.index')}}">Liste des articles</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{post.title|u.truncate('50', '...')}}</li>
+                </ol>
+            </nav>
+
+                {% if post.image %}
+                    <img src="{{ vich_uploader_asset(post, 'imageFile')}}" alt="{{post.title}}" class="img-fluid">
+                {% else %}
+                    
+                {% endif %}
+                    <h1 class="text-center my-3 display-5">{{post.title}}</h1>
+                    <p class="text-center text-dark-emphasis fs-4">Publié {{post.updatedAt|ago}} par Jean Dupont</p>
+
+
+                <article class="container-fluid">
+                    {{post.content|raw}}
+                </article>
+
+                {% if app.user %}
+                    <div class="my-5" id="create-comment-box">
+                        {{form_start(form, {'action': path('visitor.blog.post.show', {'id':post.id, 'slug':post.slug})~"#create-comment-box" } ) }}
+                            <div class="mb-3">
+                                <div class="text-danger">
+                                    {{form_errors(form.content)}}
+                                </div>
+                                {{form_widget(form.content, {'attr' : {'class' : 'form-control', 'placeholder' : 'Laissez un commentaire', 'rows': 4}})}}
+                            </div>
+                            <div class="d-grid col-6 mx-auto">
+                                <input formnovalidate type="submit" value="Commentez" class="btn btn-primary ">
+                            </div>
+                        {{form_end(form)}}
+                    </div>
+                {% else %}
+                <div class="my-5 text-center bg-light-subtle border rounded shadow p-3">
+                    <h5>Vous n'est pas inscrire. Veuillez vous connectez pour laisser un commentaire.</h5>
+                    <div class="d-flex align-items-center justify-content-evenly flex-md-row flex-column">
+                        <a href="{{path('visitor.authentication.login')}}" class="btn btn-primary mt-2">Se connecter</a>
+                        <a href="{{path('visitor.registration.register')}}" class="btn btn-outline-primary mt-2">S'inscrire</a>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="my-3 ">
+                    <h2 class="mb-3 display-6 text-dark-emphasis">Commentaires</h2>
+                    {% for comment in post.comments|reverse %}
+                        <div class="shadow-lg bg-primary-subtle p-3 rounded border border-white-subtle border-2 mb-3">
+                            <h5>{{comment.user.firstName}} {{comment.user.lastName}}
+                            {{'ROLE_SUPER_ADMIN' in comment.user.roles ? "<span class='badge text-bg-light shadow'>Super Admin</span>" : ''}}
+                            {{'ROLE_ADMIN' in comment.user.roles ? "<span class='badge text-bg-warning shadow'>Admin</span>" : ''}}
+                            {{'ROLE_USER' in comment.user.roles ? "<span class='badge text-bg-success shadow'>Utilisateur</span>" : ''}}
+                            </h5>
+                            <p><small class=" text-dark-emphasis">Publié {{comment.createdAt|ago}} par {{comment.user.firstName}} {{comment.user.lastName}}</small></p>
+                            <hr>
+                            <p>{{comment.content}}</p>
+
+                        </div>
+                    {% endfor %}
+                </div>
+
+        </div>
+    </main>
+{% endblock %}

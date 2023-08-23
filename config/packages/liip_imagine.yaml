@@ -26,3 +26,20 @@ liip_imagine:
                 # create a 2px black border: center the thumbnail on a black background
                 # 4px larger to create a 2px border around the final image
                 background : { size : [122, 102], position : center, color : '#000000' }
+                
+        visitor_blog_thumbnail :
+
+            # adjust the image quality to 75%
+            quality : 100
+
+            # list of transformations to apply (the "filters")
+            filters :
+
+                # use and setup the "thumbnail" filter
+                thumbnail:
+
+                    # set the thumbnail size to "32x32" pixels
+                    size: [800, 800]
+
+                    # crop the input image, if required
+                    mode: outbound
