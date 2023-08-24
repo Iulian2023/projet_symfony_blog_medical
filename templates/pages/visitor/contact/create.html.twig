@@ -4,16 +4,78 @@
 
 {% block description %} Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae. {% endblock %}
 
+{% block FontAwesome %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
 {% block main %}
     <main>
         {{ include ("components/header_visitor.html.twig", {title: 'Contactez-moi'}) }}
 
-        <div class="row">
-            <div class="col-md-6">
-            
+
+        <div class="container mt-3 mb-3">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div class="col-md-6">
-            
+        {% endfor %}
+            <div class="row">
+                <div class="col-md-6 order-1 mt-3 mt-md-5">
+                    <div class="text-md-center">
+                        <p><i class="fa-solid fa-envelope"></i> : medicine-du-monde@gmail.com</p>
+                        <p><i class="fa-solid fa-phone"></i> : 06 05 05 05 05</p>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d20993.684016153085!2d2.2904987722015733!3d48.873263542217316!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66fc616046975%3A0x50b82c368941ac0!2sArondismentul%208%20din%20Paris%2C%2075008%20Paris!5e0!3m2!1sro!2sfr!4v1692865499281!5m2!1sro!2sfr" width="600" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="w-100"></iframe>
+                    </div>
+                </div>
+                <div class="col-md-6 order-0 ">
+                    {{form_start(form)}}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="contact_form_firstName" class="form-label">Prénom</label>
+                                <div class="text-danger">
+                                    {{form_errors(form.firstName)}}
+                                </div>
+                                {{form_widget(form.firstName, {'attr' : {'class' : 'form-control'}})}}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="contact_form_lastName" class="form-label">Nom</label>
+                                <span class="text-danger">
+                                    {{form_errors(form.lastName)}}
+                                </span>
+                                {{form_widget(form.lastName, {'attr' : {'class' : 'form-control'}})}}
+                            </div>
+                            </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="contact_form_email" class="form-label">Email</label>
+                                <div class="text-danger">
+                                    {{form_errors(form.email)}}
+                                </div>
+                                {{form_widget(form.email, {'attr' : {'class' : 'form-control'}})}}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="contact_form_phone" class="form-label">Numéro de téléphone</label>
+                                <div class="text-danger">
+                                    {{form_errors(form.phone)}}
+                                </div>
+                                {{form_widget(form.phone, {'attr' : {'class' : 'form-control'}})}}
+                            </div>
+                            <div class="mb-3">
+                                <label for="contact_form_message">Message</label>
+                                <div class="text-danger">
+                                    {{form_errors(form.message)}}
+                                </div>
+                                {{form_widget(form.message, {'attr' : {'class' : 'form-control', 'rows' : 8}})}}
+                            </div>
+                            </div>
+                            <div class="mb-3 d-grid">
+                                <input formnovalidate type="submit" value="Envoyer" class="btn btn-primary shadow">
+                            </div>
+                        </div>
+                    {{form_end(form)}}
+                </div>
+
             </div>
         </div>
     </main>
