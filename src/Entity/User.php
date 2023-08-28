@@ -68,6 +68,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
 
+    #[Assert\Regex(
+        pattern: "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&].{12,}$/",
+        match: true,
+        message: 'Le mot de passe doit contenir au moins une lettre minuscule, majuscule, un chiffre et un caractére spécial.',
+    )]
     #[Assert\NotBlank (message: "Le mot de passe est obligatoire.")]
     #[Assert\Length(
         min: 12,
@@ -75,15 +80,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: "Le mot de passe doit contient au minimum {{ limit }} caractères",
         maxMessage: 'Le mot de passe ne doit pas dépaser {{ limit }} caractères.',
     )]
-    #[Assert\Regex(
-        pattern: "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/",
-        match: true,
-        message: 'Le mot de passe doit contenir au moins une lettre minuscule, majuscule, un chiffre et un caractére spécial.',
-    )]
-    #[Assert\NotCompromisedPassword (message: "Ce mot de passe est facilement piratable. Veuillez en choisir un autre")]
     /**
      * @var string The hashed password
      */
+    #[Assert\NotCompromisedPassword (message: "Ce mot de passe est facilement piratable. Veuillez en choisir un autre")]
     #[ORM\Column]
     private ?string $password = null;
 
@@ -102,7 +102,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Post::class)]
     private Collection $posts;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
 
