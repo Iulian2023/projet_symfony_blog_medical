@@ -63,7 +63,7 @@ class UserController extends AbstractController
             $em->remove($user);
             $em->flush();
 
-            $this->addFlash('success', "L'utilisateur a été supprime");
+            $this->addFlash('success', $user->getFirstName() . " " . $user->getLastName() . " " . "L'utilisateur a été supprime");
         }
 
         return $this->redirectToRoute('admin.user.index');

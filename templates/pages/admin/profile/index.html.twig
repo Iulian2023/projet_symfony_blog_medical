@@ -1,0 +1,30 @@
+{% extends "themes/base_admin.html.twig" %}
+
+{% block title %} Profile : {{app.user.firstName}} {{app.user.lastName}}{% endblock %}
+{% block description %}- Admin - Profile : {{app.user.firstName}} {{app.user.lastName}}{% endblock %}
+
+{% block main %}
+    <h1 class="text-center my-3 display-5">Mon Profil</h1>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card" style="max-width: 250rem;">
+                  <div class="card-header">
+                        Profile
+                    </div>
+                <div class="card-body bg-body-secondary">
+                    <p class="card-text"><strong>Prénom</strong> : {{app.user.firstName}}</p>
+                    <p class="card-text"><strong>Nom</strong> : {{app.user.lastName}}</p>
+                    <p class="card-text"><strong>Email</strong> : {{app.user.email}}</p>
+                    <hr>
+                    <div class="d-flex justify-content-evenly flex-md-row flex-column gap-2">
+                        <a href="" class="btn btn-primary">Modifier le profil</a>
+                        <a href="" class="btn btn-outline-secondary">Modifier le mot de passe</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
