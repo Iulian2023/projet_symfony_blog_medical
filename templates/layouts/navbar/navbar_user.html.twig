@@ -1,0 +1,43 @@
+{% set curentPathInfo = app.request.pathInfo%}
+<div class="container">
+<nav class="navbar">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{path('visitor.welcome.index')}}">J. Dupont</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">{{app.user.firstName}} {{app.user.lastName}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link {{curentPathInfo == path('user.home.index') ? 'jd-active' : ''}}"
+                {{curentPathInfo == path('user.home.index') ? "aria-current='page'"  : ''}} aria-current="page" href="{{path('user.home.index')}}"><i class="fa-solid fa-house"> </i>Espace</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{curentPathInfo == path('user.profile.index') ? 'jd-active' : ''}}"
+                {{curentPathInfo == path('user.profile.index') ? "aria-current='page'"  : ''}} aria-current="page" href="{{path('user.profile.index')}}"><i class="fa-solid fa-user"></i> Mon profil </a>
+          </li>
+          <hr>
+        </ul>
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+        {% if is_granted('ROLE_ADMIN') %}
+          <li class="nav-item d-grid">
+            <a class="btn btn-primary mb-2" aria-current="page" href="{{path('admin.home.dashboard')}}">Espace Admin</a>
+          </li>
+        {% endif %}
+          <li class="nav-item d-grid">
+            <a class="btn btn-primary mb-2" aria-current="page" href="{{path('app.logout')}}">Déconnexion</a>
+          </li>
+          <li class="nav-item d-grid">
+            <a class="btn btn-outline-primary" aria-current="page" href="{{path('visitor.welcome.index')}}">Retour au site</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+</div>

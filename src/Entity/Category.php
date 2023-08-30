@@ -95,6 +95,24 @@ class Category
         return $this->posts;
     }
 
+    /**
+     * @return array
+     */
+    public function getPublishedPosts(): array
+    {
+        $allPosts = $this->getPosts()->toArray();
+
+        $publishedPosts = [];
+
+        foreach ($allPosts as $post) {
+            if ($post->isIsPublished() == true) 
+            {
+                $publishedPosts[] = $post;
+            }
+        }
+        return $publishedPosts;
+    }
+
     public function addPost(Post $post): static
     {
         if (!$this->posts->contains($post)) {

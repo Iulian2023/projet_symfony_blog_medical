@@ -21,7 +21,7 @@
                 <li><a class="dropdown-item disabled" href="#" aria-disabled="true" >Acune catégorie</a></li>
             {% else %}
             {% for category in categories %}
-                <li><a class="dropdown-item" href="#">{{category.name}} ({{category.posts|length}})</a></li>
+                <li><a class="dropdown-item" href="{{path('visitor.blog.posts.filter_by_category', {'slug' : category.slug})}}">{{category.name}} ({{category.getPublishedPosts|length}})</a></li>
             {% endfor %}
             {% endif %}
             </ul>
@@ -36,7 +36,7 @@
                 <li><a class="dropdown-item disabled" href="#" aria-disabled="true">Acune tag</a></li>
             {% else %}    
             {% for tag in tags %}
-                <li><a class="dropdown-item" href="#">{{tag.name}} ({{tag.posts|length}})</a></li>
+                <li><a class="dropdown-item" href="#">{{tag.name}} ({{tag.getPublishedPosts|length}})</a></li>
             {% endfor %}
             {% endif %}
             </ul>

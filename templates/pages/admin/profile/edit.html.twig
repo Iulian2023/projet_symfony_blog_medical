@@ -1,0 +1,42 @@
+{% extends "themes/base_admin.html.twig" %}
+
+{% block title %}Modifier le profil{% endblock %}
+{% block description %}Modifier le profil{% endblock %}
+
+{% block main %}
+    <h1 class="text-center my-3 display-5">
+        Modifier le profile
+    </h1>
+
+    <div class="container">
+            <div class="col-lg-6 mx-auto mt-5 bg-primary-subtle rounded p-5">
+                {{form_start(form)}}
+                <div class="mb-3">
+                    <label for="edit_profile_form_firstName">Prénom</label>
+                    <div class="text-danger">
+                        {{form_errors(form.firstName)}}
+                    </div>
+                    {{form_widget(form.firstName, {'attr' : {'class' : 'form-control'}})}}
+                </div>
+                <div class="mb-3">
+                    <label for="edit_profile_form_lastName">Nom</label>
+                    <div class="text-danger">
+                        {{form_errors(form.lastName)}}
+                    </div>
+                    {{form_widget(form.lastName, {'attr' : {'class' : 'form-control'}})}}
+                </div>
+                <div class="mb-3">
+                    <label for="edit_profile_form_email">Email</label>
+                    <div class="text-danger">
+                        {{form_errors(form.email)}}
+                    </div>
+                    {{form_widget(form.email, {'attr' : {'class' : 'form-control'}})}}
+                </div>
+                <hr>
+                <div class="mt-4 d-grid">
+                    <input type="submit" value="Modifié" class="btn btn-primary shadow" formnovalidate>
+                </div>
+                {{form_end(form)}}
+            </div>
+    </div>
+{% endblock %}

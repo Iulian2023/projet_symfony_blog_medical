@@ -40,15 +40,15 @@
         <section id="latest-posts" class="my-3 py-3">
             <h1 class="display-5 text-center my-3">Mes derniers articles</h1>
 
-            <div class="container mt-5">
+            <div class="container-fluid mt-5">
                 <div class="d-flex flex-md-row flex-column justify-content-evenly">
                     {% for post in posts %}
-                        <div class="card-group mx-3">
+                        <div class="card-group mx-0 mx-md-3 w-100">
                             <div class="card shadow">
                                 <div class="card-body">
                                     <h5 class="card-title text-center">{{post.title}}</h5>
                                     <p class="card-text">{{post.content|striptags|u.truncate(50, '...')|raw}}</p>
-                                    <p class="text-center"><a href="" class="btn btn-sm btn-primary">Lire cet article</a></p>
+                                    <p class="text-center"><a href="{{path('visitor.blog.post.show', {'id':post.id, 'slug':post.slug})}}" class="btn btn-sm btn-primary">Lire cet article</a></p>
                                     <p class="card-text"><small class="text-body-secondary">Publié {{post.updatedAt|ago}}</small></p>
                                 </div>
                             </div>
@@ -60,7 +60,7 @@
     {% endif %}
 
         <section class="my-3 py-5 bg-light text-center">
-            <a href="#" class="btn btn-lg btn-primary">Contactez-moi</a>
+            <a href="{{path("visitor.contact.create")}}" class="btn btn-lg btn-primary">Contactez-moi</a>
         </section>
     </main>
 {% endblock %}

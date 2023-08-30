@@ -33,7 +33,7 @@
                 {% endif %}
                 {% if "ROLE_USER" in app.user.roles %}
                     <li class="nav-item">
-                        <a href="#" class="btn btn-primary mx-jd shadow">Espace privé</a>
+                        <a href="{{path('user.home.index')}}" class="btn btn-primary mx-jd shadow">Espace privé</a>
                     </li>
                 {% endif %}
                     <li class="nav-item">

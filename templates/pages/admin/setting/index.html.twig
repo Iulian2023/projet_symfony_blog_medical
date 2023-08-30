@@ -1,0 +1,33 @@
+{% extends "themes/base_admin.html.twig" %}
+
+{% block title %}Les paramètres{% endblock %}
+{% block description %}Les paramètres{% endblock %}
+
+{% block main %}
+    <h1 class="text-center display-5 my-3">Les paramètres</h1>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+        </div>
+    {% endfor %}
+    <div class="container">
+        <div class="col-lg-6 mx-auto mt-5">
+            <div class="card">
+                <div class="card-header">
+                    Les paramètres
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong>Adrése d'email :</strong> {{setting.email}}.</p>
+                    {% if setting.email is not empty %}
+                        <p class="card-text"><strong>Numéro de téléphone :</strong> {{setting.phone}}.</p>
+                    {% else %}
+                        <p class="card-text">Acune numéro de téléphone enregiste</p>
+                    {% endif %}
+                    <a href="{{path('admin.setting.edit', {'id' : setting.id})}}" class="btn btn-primary">Modifié les paramètres</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
