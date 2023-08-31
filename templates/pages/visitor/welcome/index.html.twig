@@ -8,7 +8,7 @@
             <div class="container-fluid mt-5">
                 <div class="row">
                     <div class="col-md-5 order-md-1">
-                        <img src="{{asset("images/visitor/hero/hero.png")}}" alt="Blog de Jean Dupont Ilustratuion d'un docteur" class="img-fluid">
+                        <img data-aos="flip-right" data-aos-duration="2000" src="{{asset("images/visitor/hero/hero.png")}}" alt="Blog de Jean Dupont Ilustratuion d'un docteur" class="img-fluid">
                     </div>
                     <div class="col-md-7 order-md-0 text-center mt-5">
                         <h1 class="display-6 py-5 font-weight-bolder">Bienvenue sur mon blog</h1>
@@ -21,7 +21,7 @@
         </header>
 
         <section id="about-me" class="my-5 bg-light py-5">
-            <h1 class="text-center mb-5">Qui suis-je</h1>
+            <h1 class="text-center mb-5" data-aos="fade-down">Qui suis-je</h1>
             <div class="container">
                 <div class="row d-flex justify-content-evenly">
                     <div class="col-md-4 d-flex justify-content-center align-items-center">
@@ -38,7 +38,7 @@
 
     {% if posts is not empty %}
         <section id="latest-posts" class="my-3 py-3">
-            <h1 class="display-5 text-center my-3">Mes derniers articles</h1>
+            <h1 class="display-5 text-center my-3" data-aos="fade-down">Mes derniers articles</h1>
 
             <div class="container-fluid mt-5">
                 <div class="d-flex flex-md-row flex-column justify-content-evenly">
@@ -60,7 +60,15 @@
     {% endif %}
 
         <section class="my-3 py-5 bg-light text-center">
-            <a href="{{path("visitor.contact.create")}}" class="btn btn-lg btn-primary">Contactez-moi</a>
+            <a 
+            href="{{path("visitor.contact.create")}}" 
+            class="btn btn-lg btn-primary"
+            data-aos="flip-left"
+            data-aos-easing="ease-out-cubic"
+            data-aos-duration="2000"
+            >
+            Contactez-moi
+            </a>
         </section>
     </main>
 {% endblock %}

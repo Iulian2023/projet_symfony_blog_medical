@@ -21,7 +21,9 @@
                 <li><a class="dropdown-item disabled" href="#" aria-disabled="true" >Acune catégorie</a></li>
             {% else %}
             {% for category in categories %}
-                <li><a class="dropdown-item" href="{{path('visitor.blog.posts.filter_by_category', {'slug' : category.slug})}}">{{category.name}} ({{category.getPublishedPosts|length}})</a></li>
+                {% if category.getPublishedPosts is not empty %}
+                    <li><a class="dropdown-item" href="{{path('visitor.blog.posts.filter_by_category', {'slug' : category.slug})}}">{{category.name}} ({{category.getPublishedPosts|length}})</a></li>
+                {% endif %}
             {% endfor %}
             {% endif %}
             </ul>
@@ -36,17 +38,19 @@
                 <li><a class="dropdown-item disabled" href="#" aria-disabled="true">Acune tag</a></li>
             {% else %}    
             {% for tag in tags %}
-                <li><a class="dropdown-item" href="#">{{tag.name}} ({{tag.getPublishedPosts|length}})</a></li>
+                {% if tag.getPublishedPosts is not empty %}
+                    <li><a class="dropdown-item" href="{{path('visitor.blog.posts.filter_by_tag', {'slug' : tag.slug})}}">{{tag.name}} ({{tag.getPublishedPosts|length}})</a></li>
+                {% endif %}
+                
             {% endfor %}
             {% endif %}
             </ul>
         </div>
     </div>
-
     {% if posts is not empty %}
         <div class="container">
             {% for post in posts %}
-            <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex justify-content-center align-items-center" data-aos="fade-up" data-os-duration="1500">
                 <div class="card mb-3" style="max-width: 740px; ">
                     <div class="row">
                         <div class="col-md-4">
@@ -60,6 +64,11 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{post.title}}</h5>
                                 <p class="card-text"><small class="text-body-secondary">Publié {{post.updatedAt|ago}}</small></p>
+                                {% for tag in post.tags %}
+                                        <a href="{{path('visitor.blog.posts.filter_by_tag', {'slug' : tag.slug})}}" class="text-decoration-none">
+                                            <span class="badge text-bg-secondary mb-3">{{tag.name}}</span>
+                                        </a>
+                                {% endfor %}
                                 <p class="card-text">{{post.content|striptags|u.truncate(80, '...')|raw}}</p>
                                 <p class=""><a href="{{path('visitor.blog.post.show', {'id': post.id, 'slug': post.slug})}}" class="btn btn-sm btn-primary">Lire la suite</a></p>
                             </div>
@@ -67,9 +76,13 @@
                     </div>
                 </div>
             </div>
-        {% endfor %}
         </div>
+        {% endfor %}
+            <div class="d-flex justify-content-center">
+                {{ knp_pagination_render(posts) }}
+            </div>
     {% else %}
         <h3 class="text-center my-3 mt-5">Acune article publié pour l'instant</h3>
     {% endif %}
+
 {% endblock %}

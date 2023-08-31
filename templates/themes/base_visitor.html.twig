@@ -7,7 +7,9 @@
         <title>Jean Dupon {% block title %}{% endblock %}</title>
 
         {# Font Awesome #}
-        {% block FontAwesome %}{% endblock %}
+        {% block FontAwesome %}
+            
+        {% endblock %}
 
 
         {# Favicon #}
@@ -36,6 +38,7 @@
             {# Stylesheet Css #}
             {# <link rel="stylesheet" href="{{asset('assets/styles/app.css')}}"> #}
 
+            <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     </head>
     <body class="jd-body">
         {# Navbar #}
@@ -45,5 +48,10 @@
 
         {# Footer #}
         {% include "layouts/footer/footer_visitor.html.twig" %}
+
+        
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>AOS.init();</script>
+        {% block javascript %}{% endblock %}
     </body>
 </html>

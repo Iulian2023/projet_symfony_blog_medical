@@ -2,6 +2,10 @@
  
 {% block title %} - Le blog sur la santé - {{post.title}}{% endblock %}
 
+{% block FontAwesome %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
 {% block main %}
     <main>
         <div class="jd-container my-5">
@@ -23,6 +27,16 @@
 
                 <article class="container-fluid">
                     {{post.content|raw}}
+
+                    <a id="like-link" href="{{path('visitor.blog.post.like', {'id' : post.id, 'slug' : post.slug})}}" class="text-decoration-none">
+                        {% if app.user and post.isLikedBy(app.user) %}
+                            <span><i class="fa-solid fa-thumbs-up fs-3"></i></span> 
+                        {% else %}
+                            <span><i class="fa-regular fa-thumbs-up fs-3"></i></span> 
+                        {% endif %}
+                        <span id="total-like-container">{{post.postLikes|length}}</span>
+                        <span class="">J'aime</span> {# Post no liké #}
+                    </a>
                 </article>
 
                 {% if app.user %}
@@ -40,47 +54,82 @@
                         {{form_end(form)}}
                     </div>
                 {% else %}
-                <div class="my-5 text-center bg-light-subtle border rounded shadow p-3">
-                    <h5>Vous n'est pas inscrire. Veuillez vous connectez pour laisser un commentaire.</h5>
-                    <div class="d-flex align-items-center justify-content-evenly flex-md-row flex-column">
-                        <a href="{{path('visitor.authentication.login')}}" class="btn btn-primary mt-2">Se connecter</a>
-                        <a href="{{path('visitor.registration.register')}}" class="btn btn-outline-primary mt-2">S'inscrire</a>
+                    <div class="my-5 text-center bg-light-subtle border rounded shadow p-3">
+                        <h5>Vous n'est pas inscrire. Veuillez vous connectez pour laisser un commentaire.</h5>
+                        <div class="d-flex align-items-center justify-content-evenly flex-md-row flex-column">
+                            <a href="{{path('visitor.authentication.login')}}" class="btn btn-primary mt-2">Se connecter</a>
+                            <a href="{{path('visitor.registration.register')}}" class="btn btn-outline-primary mt-2">S'inscrire</a>
+                        </div>
                     </div>
-                </div>
                 {% endif %}
 
                 <div class="my-3 ">
                     <h2 class="mb-3 display-6 text-dark-emphasis">Commentaires</h2>
                         {% set count = 0 %}
                             {% if post.comments is not empty %}
-                                {% for comment in post.comments %}
-                                    {% if comment.isActivated %}
-                                        {% set count = count + 1 %}
-
-                                    {% endif %}
-                                {% endfor %}
-
-                                {% if count <= 0 %}
-                                    <p class="text-center mt-3">Aucun commentaire laissé pour cet article</p>
-                                {% else %}
-                                    {% for comment in post.comments|reverse %}
-                                        {% if comment.isActivated %}                
-                                            <div class="shadow-lg bg-primary-subtle p-3 rounded border border-white-subtle border-2 mb-3">
-                                                <h5>{{comment.user.firstName}} {{comment.user.lastName}}
-                                                {{'ROLE_SUPER_ADMIN' in comment.user.roles ? "<span class='badge text-bg-light shadow'>Super Admin</span>" : ''}}
-                                                {{'ROLE_ADMIN' in comment.user.roles ? "<span class='badge text-bg-warning shadow'>Admin</span>" : ''}}
-                                                {{'ROLE_USER' in comment.user.roles ? "<span class='badge text-bg-success shadow'>Utilisateur</span>" : ''}}
-                                                </h5>
-                                                <p><small class=" text-dark-emphasis">Publié {{comment.createdAt|ago}} par {{comment.user.firstName}} {{comment.user.lastName}}</small></p>
-                                                <hr>
-                                                <p>{{comment.content}}</p>
-                                            </div>
-                                        {% endif %}
-                                            <hr>
-                                    {% endfor %}
+                            {% for comment in post.comments %}
+                                {% if comment.isActivated %}
+                                    {% set count = count + 1 %}
                                 {% endif %}
-                            {% endif %}
+                            {% endfor %}
+                    {% if count <= 0 %}
+                        <p class="text-center mt-3">Aucun commentaire laissé pour cet article</p>
+                    {% else %}
+                        {% for comment in post.comments|reverse %}
+                        {% if comment.isActivated %}                
+                            <div class="shadow-lg bg-primary-subtle p-3 rounded border border-white-subtle border-2 mb-3">
+                                <h5>{{comment.user.firstName}} {{comment.user.lastName}}
+                                {{'ROLE_SUPER_ADMIN' in comment.user.roles ? "<span class='badge text-bg-light shadow'>Super Admin</span>" : ''}}
+                                {{'ROLE_ADMIN' in comment.user.roles ? "<span class='badge text-bg-warning shadow'>Admin</span>" : ''}}
+                                {{'ROLE_USER' in comment.user.roles ? "<span class='badge text-bg-success shadow'>Utilisateur</span>" : ''}}
+                                </h5>
+                                <p><small class=" text-dark-emphasis">Publié {{comment.createdAt|ago}} par {{comment.user.firstName}} {{comment.user.lastName}}</small></p>
+                                <hr>
+                                <p>{{comment.content}}</p>
+                            </div>
+                        {% endif %}
+                                <hr>
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
     </main>
+{% endblock %}
+
+{% block javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(function(){
+            $('#like-link').on('click', function(event){
+                event.preventDefault();
+
+                $.ajax({
+                    url: this.href,
+                    type: 'GET',
+                    success: function(response){
+                        $('#total-like-container').html(response.totalLikes);
+
+                        if($('i').hasClass('fa-regular')){
+                            $('i').removeClass('fa-regular');
+                            $('i').addClass('fa-solid');
+                            $('i').addClass('fa-bounce');
+                            $('i').attr("style", '--fa-animation-duration: 3s;');
+                            $('i').attr("style", '--fa-animation-iteration-count: 1;');
+                        } else {
+                            $('i').removeClass('fa-solid');
+                            $('i').addClass('fa-regular');
+                        }
+                    },
+                    error: function(response){
+                        if(response.status == 403){
+                            alert(response.responseJSON.message);
+                        } else {
+                            alert('Une erreur est survenue. Veuillez réesayer plus tard.');
+                        }
+                    },
+                });
+            });
+        });
+    </script>
 {% endblock %}
